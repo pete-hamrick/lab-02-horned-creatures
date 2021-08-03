@@ -10,13 +10,13 @@ class App extends Component {
   };
   render() { 
     const filteredCreatures = images.filter(
-      (image) => this.state.type === 'All' || image.type === this.state.type
+      (image) => image.keyword === this.state.type 
     );
-    // [narwhal, rhino, unicorn, unilego, triceratops, markhor, mouflon, addax, chameleon, lizard, dragon]
     return ( 
       <div className='App'>
           <h1>Horned Creatures</h1>
-          {/* <select onChange={this.handleChange}>
+          <select onChange={this.handleChange}>
+            <option value='All'>All</option>
             <option value='narwhal'>narwhal</option>
             <option value='rhino'>rhino</option>
             <option value='unicorn'>unicorn</option>
@@ -28,10 +28,12 @@ class App extends Component {
             <option value='chameleon'>chameleon</option>
             <option value='lizard'>lizard</option>
             <option value='dragon'>dragon</option>
-          </select> */}
-          <ImageList 
-            image={images}
-          />
+          </select>
+          <div className='images'>
+            <ImageList
+              image={this.state.type === 'All' ? images : filteredCreatures}
+            />
+          </div>
       </div>
      );
   }
