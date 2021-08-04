@@ -2,36 +2,47 @@ import React, { Component } from 'react';
 import './App.css';
 import ImageList from './ImageList.js';
 import images from './data.js'
+import Dropdown from './Dropdown';
 
 class App extends Component {
-  state = { type: 'All' }
+  state = { 
+    type: 'All',
+    horns: 'All'
+  }
+  keywordOptions = ['All', 'narwhal', 'rhino', 'unicorn', 'unilego', 'triceratops', 'markhor', 'addax', 'chameleon', 'lizard', 'dragon']
+  hornsOptions = ['All', 1, 2, 3, 100]
+  
   handleChange = (e) => {
     this.setState({type: e.target.value})
   };
+  handleHornsChange = (e) => {
+    const numHorns = e.target.value;
+    this.setState({ horns: numHorns });
+  };
+
   render() { 
     const filteredCreatures = images.filter(
-      (image) => image.keyword === this.state.type 
+      (image) => this.state.type === 'All' || image.keyword === this.state.type
+    );
+    const filteredHorns = filteredCreatures.filter (
+      (image) => this.state.horns === 'All' || image.horns === Number(this.state.horns)
     );
     return ( 
       <div className='App'>
           <h1>Horned Creatures</h1>
-          <select onChange={this.handleChange}>
-            <option value='All'>All</option>
-            <option value='narwhal'>narwhal</option>
-            <option value='rhino'>rhino</option>
-            <option value='unicorn'>unicorn</option>
-            <option value='unilego'>unilego</option>
-            <option value='triceratops'>triceratops</option>
-            <option value='markhor'>markhor</option>
-            <option value='mouflon'>mouflon</option>
-            <option value='addax'>addax</option>
-            <option value='chameleon'>chameleon</option>
-            <option value='lizard'>lizard</option>
-            <option value='dragon'>dragon</option>
-          </select>
+          <Dropdown
+              label='Type'
+              options={this.keywordOptions}
+              changeEvent={this.handleChange}
+          />
+          <Dropdown
+              label='Horns'
+              options={this.hornsOptions}
+              changeEvent={this.handleHornsChange}
+          />
           <div className='images'>
             <ImageList
-              image={this.state.type === 'All' ? images : filteredCreatures}
+              image={filteredHorns}
             />
           </div>
       </div>
